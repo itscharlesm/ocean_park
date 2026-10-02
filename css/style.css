@@ -1,0 +1,691 @@
+/* ==========================================================================
+   Ocean Park — a reef full of life, and a treasure chest with a short
+   letter inside that opens as bubbles are popped.
+   ========================================================================== */
+
+:root {
+    --surface: #8fe3e8;
+    --mid: #1e7fa8;
+    --deep: #0a2f52;
+    --abyss: #051b33;
+    --sand: #e8c383;
+    --sand-dark: #c89a5c;
+    --coral: #ff7f66;
+    --coral-dark: #e85f49;
+    --gold: #ffd76b;
+    --gold-soft: #ffe8a3;
+    --pearl: #eafcff;
+    --ink: #04101f;
+
+    --font-script: 'Dancing Script', cursive;
+    --font-serif: 'Cormorant Garamond', serif;
+    --font-sans: 'Quicksand', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    background: var(--abyss);
+    color: var(--pearl);
+    font-family: var(--font-serif);
+}
+
+h1,
+h2 {
+    margin: 0;
+    font-weight: 600;
+}
+
+p {
+    margin: 0;
+}
+
+::selection {
+    background: var(--gold);
+    color: var(--ink);
+}
+
+/* ==========================================================================
+   The gate
+   ========================================================================== */
+
+.gate {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at 50% 20%, var(--mid) 0%, var(--deep) 55%, var(--abyss) 100%);
+    transition: opacity 1.4s ease, visibility 1.4s ease;
+    overflow: hidden;
+}
+
+.gate.gate-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.gate-bubbles {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(5px 5px at 15% 85%, rgba(234, 252, 255, 0.5), transparent),
+        radial-gradient(3px 3px at 35% 70%, rgba(234, 252, 255, 0.4), transparent),
+        radial-gradient(4px 4px at 55% 90%, rgba(234, 252, 255, 0.5), transparent),
+        radial-gradient(3px 3px at 75% 75%, rgba(234, 252, 255, 0.4), transparent),
+        radial-gradient(5px 5px at 90% 85%, rgba(234, 252, 255, 0.5), transparent),
+        radial-gradient(3px 3px at 25% 95%, rgba(234, 252, 255, 0.35), transparent);
+    animation: gateBubbleRise 6s linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes gateBubbleRise {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-110vh);
+    }
+}
+
+.gate-content {
+    position: relative;
+    text-align: center;
+    padding: 2rem;
+}
+
+.gate-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--pearl);
+    opacity: 0.75;
+    margin-bottom: 0.75rem;
+}
+
+.gate-title {
+    font-family: var(--font-script);
+    font-size: clamp(3rem, 11vw, 5.6rem);
+    color: var(--gold-soft);
+    text-shadow: 0 0 40px rgba(255, 215, 107, 0.35);
+    line-height: 1;
+}
+
+.gate-button {
+    position: relative;
+    margin-top: 2.5rem;
+    padding: 0.9rem 2.4rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 215, 107, 0.5);
+    background: rgba(255, 215, 107, 0.1);
+    color: var(--gold-soft);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background 0.35s ease, transform 0.35s ease;
+    overflow: hidden;
+}
+
+.gate-button:hover {
+    background: rgba(255, 215, 107, 0.18);
+    transform: translateY(-2px);
+}
+
+.gate-button-glow {
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(circle, rgba(255, 215, 107, 0.35), transparent 60%);
+    animation: pulseGlow 2.6s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        transform: scale(0.85);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.9;
+    }
+}
+
+.gate-button-text {
+    position: relative;
+}
+
+.gate-hint {
+    margin-top: 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--pearl);
+    opacity: 0.65;
+}
+
+/* ==========================================================================
+   Fixed background — ocean gradient, light rays, real photos, sand, coral
+   ========================================================================== */
+
+.ocean {
+    position: fixed;
+    inset: 0;
+    z-index: -6;
+    background: linear-gradient(180deg, var(--surface) 0%, var(--mid) 28%, var(--deep) 65%, var(--abyss) 100%);
+}
+
+.light-rays {
+    position: fixed;
+    inset: -10% -10% 0 -10%;
+    z-index: -5;
+    background:
+        repeating-linear-gradient(100deg,
+            rgba(255, 255, 255, 0.10) 0px,
+            rgba(255, 255, 255, 0.10) 40px,
+            transparent 40px,
+            transparent 160px);
+    mix-blend-mode: screen;
+    opacity: 0.6;
+    animation: raySway 14s ease-in-out infinite alternate;
+    transform-origin: top center;
+}
+
+@keyframes raySway {
+    from {
+        transform: skewX(-6deg) translateX(-2%);
+    }
+
+    to {
+        transform: skewX(4deg) translateX(2%);
+    }
+}
+
+.fish-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    pointer-events: none;
+}
+
+.sand {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 11vh;
+    z-index: -2;
+    background: linear-gradient(180deg, var(--sand) 0%, var(--sand-dark) 100%);
+    border-top: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.coral {
+    position: fixed;
+    bottom: 9.5vh;
+    left: 0;
+    right: 0;
+    height: 9vh;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 10% 100% at 8% 100%, var(--coral) 45%, transparent 46%),
+        radial-gradient(ellipse 7% 90% at 14% 100%, var(--coral-dark) 45%, transparent 46%),
+        radial-gradient(ellipse 9% 100% at 85% 100%, var(--coral-dark) 45%, transparent 46%),
+        radial-gradient(ellipse 7% 85% at 92% 100%, var(--coral) 45%, transparent 46%),
+        radial-gradient(ellipse 14% 60% at 50% 100%, #2f7a52 45%, transparent 46%),
+        radial-gradient(ellipse 10% 70% at 65% 100%, #3a8f60 45%, transparent 46%);
+}
+
+/* ==========================================================================
+   Fish — ambient, realistic-ish, swimming in schools
+   ========================================================================== */
+
+.fish {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.85;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+}
+
+.fish svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.fish .fin {
+    transform-origin: 80% 50%;
+    animation: finWag 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes finWag {
+    from {
+        transform: rotate(-12deg);
+    }
+
+    to {
+        transform: rotate(10deg);
+    }
+}
+
+.fish .tentacle {
+    transform-origin: top center;
+    animation: tentacleWave 2.4s ease-in-out infinite;
+}
+
+.fish .t2 {
+    animation-delay: 0.15s;
+}
+
+.fish .t3 {
+    animation-delay: 0.3s;
+}
+
+.fish .t4 {
+    animation-delay: 0.45s;
+}
+
+.fish .t5 {
+    animation-delay: 0.6s;
+}
+
+@keyframes tentacleWave {
+
+    0%,
+    100% {
+        transform: rotate(-5deg);
+    }
+
+    50% {
+        transform: rotate(5deg);
+    }
+}
+
+.fish.octopus {
+    animation: octopusPulse 3.4s ease-in-out infinite;
+}
+
+@keyframes octopusPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.fish.seahorse {
+    animation: seahorseHover 2.8s ease-in-out infinite;
+}
+
+@keyframes seahorseHover {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(-3deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(3deg);
+    }
+}
+
+/* ==========================================================================
+   Bubbles — ambient rising, plus the catchable ones
+   ========================================================================== */
+
+.bubbles-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.85), rgba(234, 252, 255, 0.25) 55%, rgba(234, 252, 255, 0.08) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    pointer-events: none;
+}
+
+.bubble.ambient {
+    opacity: 0;
+    animation-name: ambientRise;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes ambientRise {
+    0% {
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 0.55;
+    }
+
+    92% {
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translate(var(--sway, 20px), -112vh);
+        opacity: 0;
+    }
+}
+
+.bubble.catchable {
+    pointer-events: auto;
+    cursor: pointer;
+    box-shadow: 0 0 10px 2px rgba(234, 252, 255, 0.25);
+    transition: left 4.5s ease-in-out, top 4.5s ease-in-out;
+}
+
+.bubble.catchable.popping {
+    transition: left 0.6s cubic-bezier(0.3, 0, 0.7, 1), top 0.6s cubic-bezier(0.3, 0, 0.7, 1), opacity 0.4s ease 0.35s, transform 0.4s ease 0.35s;
+    opacity: 0;
+    transform: scale(0.3);
+}
+
+/* ==========================================================================
+   The page — locked to the viewport, nothing here ever scrolls
+   ========================================================================== */
+
+.page {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3vh 1.25rem 0;
+    text-align: center;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.page-header {
+    flex-shrink: 0;
+}
+
+.page-kicker {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    opacity: 0.8;
+    margin-bottom: 0.25rem;
+}
+
+.page-title {
+    font-family: var(--font-script);
+    font-size: clamp(2.1rem, 8vw, 3.1rem);
+    color: var(--pearl);
+    text-shadow: 0 0 26px rgba(234, 252, 255, 0.3);
+}
+
+/* ==========================================================================
+   Letter — typed out over the reef
+   ========================================================================== */
+
+.letter-card {
+    flex: 1;
+    width: min(90vw, 30rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 0.25rem;
+    min-height: 0;
+}
+
+.letter-para {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(0.92rem, 2.6vw, 1.14rem);
+    line-height: 1.6;
+    color: var(--pearl);
+    text-shadow: 0 0 16px rgba(234, 252, 255, 0.15);
+}
+
+.letter-para .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    vertical-align: text-bottom;
+    margin-left: 1px;
+    background: var(--gold-soft);
+    animation: blink 0.9s steps(1) infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    49% {
+        opacity: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 0;
+    }
+}
+
+.page-sub {
+    flex-shrink: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--pearl);
+    opacity: 0.85;
+    transition: opacity 0.5s ease;
+    padding: 0 0.5rem;
+}
+
+/* ==========================================================================
+   Treasure chest — bottom of the page, in the sand
+   ========================================================================== */
+
+.chest-wrap {
+    flex-shrink: 0;
+    margin: 0.6rem 0 2vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.chest {
+    position: relative;
+    width: 118px;
+    height: 84px;
+}
+
+.chest-glow {
+    position: absolute;
+    inset: -26px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 107, 0.4), transparent 65%);
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.chest-glow.full {
+    opacity: 1;
+}
+
+.chest-base {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background: linear-gradient(180deg, #a9713c, #7a4d26);
+    border: 2px solid #5c3a1c;
+    border-radius: 0 0 10px 10px;
+}
+
+.chest-base::after {
+    content: '';
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    transform: translate(-50%, -50%);
+    background: var(--gold);
+    border-radius: 3px;
+    box-shadow: 0 0 6px rgba(255, 215, 107, 0.6);
+}
+
+.chest-lid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(180deg, #c48a4c, #a9713c);
+    border: 2px solid #5c3a1c;
+    border-radius: 14px 14px 4px 4px;
+    transform-origin: bottom center;
+    transition: transform 1s cubic-bezier(0.5, -0.1, 0.2, 1.2);
+    z-index: 2;
+}
+
+.chest.open .chest-lid {
+    transform: rotateX(-115deg);
+}
+
+.chest-light {
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    width: 70px;
+    height: 70px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(255, 232, 163, 0.9), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.6s ease 0.4s;
+    z-index: 1;
+}
+
+.chest.open .chest-light {
+    opacity: 1;
+}
+
+.replay-button {
+    padding: 0.5rem 1.3rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 215, 107, 0.45);
+    background: transparent;
+    color: var(--gold-soft);
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s ease;
+}
+
+.replay-button.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.replay-button:hover {
+    background: rgba(255, 215, 107, 0.12);
+}
+
+/* ==========================================================================
+   Sound toggle
+   ========================================================================== */
+
+.sound-toggle {
+    position: fixed;
+    bottom: 1.4rem;
+    right: 1.4rem;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(4, 16, 31, 0.65);
+    border: 1px solid rgba(255, 215, 107, 0.4);
+    color: var(--gold-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    z-index: 50;
+    backdrop-filter: blur(4px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.sound-toggle:hover {
+    transform: scale(1.08);
+}
+
+.sound-toggle.muted {
+    opacity: 0.5;
+}
+
+/* ==========================================================================
+   Accessibility & small screens
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .light-rays,
+    .gate-bubbles,
+    .fish .fin,
+    .fish .tentacle,
+    .fish.octopus,
+    .fish.seahorse {
+        animation: none !important;
+    }
+
+    .letter-para .cursor {
+        animation: none;
+        opacity: 1;
+    }
+}
+
+:focus-visible {
+    outline: 2px solid var(--gold-soft);
+    outline-offset: 3px;
+}
+
+@media (max-height: 680px) {
+    .page-title {
+        font-size: clamp(1.8rem, 7vw, 2.4rem);
+    }
+
+    .chest {
+        width: 98px;
+        height: 70px;
+    }
+
+    .letter-para {
+        font-size: clamp(0.84rem, 2.4vw, 1rem);
+        line-height: 1.5;
+    }
+}

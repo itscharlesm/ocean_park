@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Enchanted</title>
+    <title>Ocean Park</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Quicksand:wght@400;500;600&display=swap"
@@ -15,6 +15,59 @@
 <body>
 
     <!-- Developed by GrabCharles -->
+
+    <!-- ===== THE GATE — click to dive in, this also unlocks the audio ===== -->
+    <div id="gate" class="gate">
+        <div class="gate-bubbles"></div>
+        <div class="gate-content">
+            <p class="gate-eyebrow">a little trip, just for you</p>
+            <h1 class="gate-title">Ocean Park</h1>
+            <button id="enterBtn" class="gate-button" type="button">
+                <span class="gate-button-glow"></span>
+                <span class="gate-button-text">dive in</span>
+            </button>
+            <p class="gate-hint">(turn your sound on)</p>
+        </div>
+    </div>
+
+    <!-- ===== fixed background: ocean gradient, light rays, real whale & shark photos ===== -->
+    <div class="ocean"></div>
+    <div class="light-rays"></div>
+    <div class="fish-layer" id="fishLayer" aria-hidden="true"></div>
+    <div class="sand"></div>
+    <div class="coral" aria-hidden="true"></div>
+
+    <!-- ===== catchable bubbles layer, sits above everything so it's always tappable ===== -->
+    <div class="bubbles-layer" id="bubblesLayer"></div>
+
+    <!-- ===== the one page, locked to the viewport, nothing scrolls ===== -->
+    <main class="page">
+        <header class="page-header">
+            <p class="page-kicker">welcome to</p>
+            <h1 class="page-title">Ocean Park</h1>
+        </header>
+
+        <div class="letter-card">
+            <p class="letter-para" id="para1"></p>
+        </div>
+
+        <p class="page-sub" id="instruction">pop the bubbles drifting by &mdash; they're carrying something down to
+            the chest</p>
+
+        <div class="chest-wrap">
+            <div class="chest" id="chest">
+                <div class="chest-glow" id="chestGlow"></div>
+                <div class="chest-lid" id="chestLid"></div>
+                <div class="chest-base"></div>
+                <div class="chest-light" id="chestLight"></div>
+            </div>
+            <button id="replayBtn" class="replay-button" type="button">pop them again</button>
+        </div>
+    </main>
+
+    <div class="sound-toggle" id="soundToggle" title="mute/unmute">
+        <span id="soundIcon">&#9834;</span>
+    </div>
 
     <audio id="bgMusic" src="css/audios/bad.mp3" loop></audio>
     <script src="js/index.js"></script>
