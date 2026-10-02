@@ -5,17 +5,17 @@
 
 const CONFIG = {
     ambientBubbles: 22,
-    catchableBubbles: 10,
+    catchableBubbles: 5,
     catchesToFinish: 10,
     typingSpeedMs: 24,
-    fishCount: 13,
-    jellyfishCount: 4,
-    sharkCount: 2,
-    whaleCount: 2,
-    sealionCount: 2,
-    seahorseCount: 3,
-    octopusCount: 2,
-    letter: "My love, swimming through life feels so much better with you beside me. You turn ordinary days into little adventures, and being near you still feels like discovering something new every time. Thank you for diving into this wide, strange, wonderful world with me \u2014 I'd choose this ocean, and you, every single time. Forever yours, Charles."
+    fishCount: 7,
+    jellyfishCount: 3,
+    sharkCount: 1,
+    whaleCount: 1,
+    sealionCount: 1,
+    seahorseCount: 1,
+    octopusCount: 1,
+    letter: "This might not be as good as any Ocean Park, but just know, swimming through life feels so much better with you beside me. Thank you for diving into this wide, strange, and wonderful world with me. As time passes, we keep going deeper and deeper, and with every step, you give me more reasons why it has always been you. No matter what life brings, whether it's the highs or the lows, I would always choose to go through it all with you. Happy 11th Monthsary and soon our 1st Anniversary my pretty baby Iah. I love you so much! Forever yours, Charles."
 };
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
