@@ -9,12 +9,13 @@ const CONFIG = {
     catchesToFinish: 10,
     typingSpeedMs: 24,
     fishCount: 7,
-    jellyfishCount: 3,
+    jellyfishCount: 2,
     sharkCount: 1,
     whaleCount: 1,
     sealionCount: 1,
     seahorseCount: 1,
     octopusCount: 1,
+    turtleCount: 1,
     letter: "This might not be as good as any Ocean Park, but just know, swimming through life feels so much better with you beside me. Thank you for diving into this wide, strange, and wonderful world with me. As time passes, we keep going deeper and deeper, and with every step, you give me more reasons why it has always been you. No matter what life brings, whether it's the highs or the lows, I would always choose to go through it all with you. Happy 11th Monthsary and soon our 1st Anniversary my pretty baby Iah. I love you so much! Forever yours, Charles."
 };
 
@@ -244,6 +245,41 @@ function octopusSvg(uid) {
     </svg>`;
 }
 
+function turtleSvg(uid) {
+    const shellId = `turtleShell${uid}`;
+    return `
+    <svg viewBox="0 0 140 90" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="${shellId}" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#6aa35a"/>
+                <stop offset="100%" stop-color="#3f6b3a"/>
+            </linearGradient>
+        </defs>
+        <!-- tail -->
+        <path d="M116,52 L135,57 L116,59 Z" fill="#7fae63"/>
+        <!-- back flipper -->
+        <g class="fin" style="transform-origin: 100px 56px;">
+            <path d="M92,56 C102,70 116,78 128,80 C124,67 114,57 104,50 Z" fill="#7fae63"/>
+        </g>
+        <!-- underside -->
+        <ellipse cx="72" cy="57" rx="44" ry="11" fill="#d9c98a"/>
+        <!-- shell -->
+        <path d="M28,57 C28,22 58,9 80,9 C106,9 122,34 118,57 Z" fill="url(#${shellId})"/>
+        <!-- shell pattern -->
+        <ellipse cx="74" cy="30" rx="15" ry="10" fill="rgba(0,0,0,0.14)"/>
+        <ellipse cx="50" cy="42" rx="10" ry="8" fill="rgba(0,0,0,0.12)"/>
+        <ellipse cx="98" cy="42" rx="10" ry="8" fill="rgba(0,0,0,0.12)"/>
+        <!-- front flipper -->
+        <g class="fin" style="transform-origin: 50px 54px;">
+            <path d="M54,56 C46,72 32,82 14,85 C22,70 34,58 44,50 Z" fill="#8fbf6a"/>
+        </g>
+        <!-- head -->
+        <ellipse cx="20" cy="49" rx="15" ry="10" fill="#8fbf6a"/>
+        <circle cx="13" cy="45" r="2.6" fill="#0a1a10"/>
+        <circle cx="13.8" cy="44.2" r="0.9" fill="#fff"/>
+    </svg>`;
+}
+
 /* --------------------------------------------------------------------------
    Unified wander engine — every creature picks a new random spot, turns to
    face it, swims there at its own pace, pauses, then picks another. This is
@@ -369,6 +405,16 @@ function startSwimmers() {
             flip: false, yRange: [0.06, 0.55],
             speedMin: 5, speedMax: 12, idleMin: 1500, idleMax: 4000,
             extraClass: 'jellyfish'
+        });
+    }
+
+    for (let i = 0; i < CONFIG.turtleCount; i += 1) {
+        const size = 90 + Math.random() * 30;
+        spawnCreature(layer, {
+            svg: turtleSvg(`t${i}`), width: size, height: size * 0.64,
+            flip: true, yRange: [0.25, 0.68],
+            speedMin: 12, speedMax: 24, idleMin: 1500, idleMax: 4000,
+            extraClass: 'turtle'
         });
     }
 }
